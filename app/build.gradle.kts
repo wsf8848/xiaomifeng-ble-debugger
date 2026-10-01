@@ -11,21 +11,37 @@ android {
         applicationId = "com.xmf.debugpro"
         minSdk = 26
         targetSdk = 34
-        versionCode = 39
-        versionName = "1.8.6"
+        versionCode = 40
+        versionName = "1.8.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "LOGIN_ACCOUNT", "\"${System.getenv("XMF_LOGIN_ACCOUNT") ?: ""}\"")
+        buildConfigField("String", "LOGIN_PASSWORD", "\"${System.getenv("XMF_LOGIN_PASSWORD") ?: ""}\"")
+        buildConfigField("String", "ACTIVATION_CODE", "\"${System.getenv("XMF_ACTIVATION_CODE") ?: ""}\"")
     }
 
+    val releaseStoreFile = providers.environmentVariable("XMF_KEYSTORE_FILE").orNull
+    val releaseStorePassword = providers.environmentVariable("XMF_KEYSTORE_PASSWORD").orNull
+    val releaseKeyAlias = providers.environmentVariable("XMF_KEY_ALIAS").orNull
+    val releaseKeyPassword = providers.environmentVariable("XMF_KEY_PASSWORD").orNull
+    val hasReleaseSigning = listOf(
+        releaseStoreFile,
+        releaseStorePassword,
+        releaseKeyAlias,
+        releaseKeyPassword
+    ).all { !it.isNullOrBlank() }
+
     signingConfigs {
-        create("release") {
-            storeFile = file("../keystore/xmf-debugpro-release.jks")
-            storePassword = "XmfPro@2026"
-            keyAlias = "xmfpro"
-            keyPassword = "XmfPro@2026"
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(releaseStoreFile!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
         }
     }
 
@@ -33,7 +49,9 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            signingConfig = signingConfigs.getByName("release")
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -49,6 +67,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
         composeOptions {
         kotlinCompilerExtensionVersion = "1.4.6"

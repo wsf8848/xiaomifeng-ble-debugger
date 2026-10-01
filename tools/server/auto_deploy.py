@@ -6,10 +6,10 @@
 import os, sys, time
 import paramiko
 
-SERVER_IP = "43.138.223.90"
-SSH_USER = "ubuntu"
-SSH_PASSWORD = "wsf680221,..,"
-SERVER_DIR = "/opt/liesun-server"
+SERVER_IP = os.getenv("XMF_SERVER_IP", "")
+SSH_USER = os.getenv("XMF_SSH_USER", "ubuntu")
+SSH_PASSWORD = os.getenv("XMF_SSH_PASSWORD", "")
+SERVER_DIR = os.getenv("XMF_SERVER_DIR", "/opt/liesun-server")
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 def run_ssh(ssh, cmd, timeout=30):
@@ -23,6 +23,14 @@ def run_ssh(ssh, cmd, timeout=30):
     return exit_code, out, err
 
 def deploy():
+    missing = [name for name, value in {
+        "XMF_SERVER_IP": SERVER_IP,
+        "XMF_SSH_USER": SSH_USER,
+        "XMF_SSH_PASSWORD": SSH_PASSWORD,
+    }.items() if not value]
+    if missing:
+        raise RuntimeError("缺少部署环境变量: " + ", ".join(missing))
+
     print("=" * 55)
     print("  小蜜蜂调试助手Pro — 服务器自动部署")
     print("=" * 55)

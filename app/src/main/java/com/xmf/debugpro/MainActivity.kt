@@ -119,9 +119,9 @@ private data class LogEntry(
     val isSent: Boolean
 )
 
-private const val EXPECTED_ACCOUNT = "FYX"
-private const val EXPECTED_PASSWORD = "680221"
-private const val EXPECTED_CODE = "1010"
+private val EXPECTED_ACCOUNT: String get() = BuildConfig.LOGIN_ACCOUNT
+private val EXPECTED_PASSWORD: String get() = BuildConfig.LOGIN_PASSWORD
+private val EXPECTED_CODE: String get() = BuildConfig.ACTIVATION_CODE
 
 private const val PREFS_NAME = "xmf_login"
 private const val KEY_ACCOUNT = "account"
@@ -162,7 +162,6 @@ private fun saveDeviceToHistory(prefs: SharedPreferences, name: String, addr: St
         prefs.edit().putString("$KEY_HISTORY_PREFIX$i", "${p.first}|${p.second}").apply()
     }
 }
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,7 +170,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 // ─── TTS + 震动 ──────────────────────────────────────────────────────
 
 private class TtsHelper(context: Context) {

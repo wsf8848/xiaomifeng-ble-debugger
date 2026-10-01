@@ -246,3 +246,16 @@ python tools/gen_licenses.py --list
 <p align="center">
   <sub>Built with ❤️ by <strong>伍圣锋</strong> · 反馈：554805466@qq.com</sub>
 </p>
+
+## 面试导览
+
+| 维度 | 可验证内容 |
+|---|---|
+| 项目定位 | 面向 MCU 开发者的 BLE 串口调试、协议解析与遥控终端 |
+| 我的工作 | 实现多协议解析、自定义按键、摇杆、OTA、授权，以及 100 Hz BLE 接收优化 |
+| 技术难点 | MTU 协商、粘包重组、UI 限流、日志裁剪、断线恢复和高频数据稳定性 |
+| 工程结果 | 从 v1.0 到 v1.8.7 的连续版本历史完整，可用于讲解性能问题闭环 |
+
+### 本地敏感配置
+
+发布签名通过 `XMF_KEYSTORE_FILE`、`XMF_KEYSTORE_PASSWORD`、`XMF_KEY_ALIAS`、`XMF_KEY_PASSWORD` 注入；登录演示参数通过 `XMF_LOGIN_ACCOUNT`、`XMF_LOGIN_PASSWORD`、`XMF_ACTIVATION_CODE` 注入。服务器部署参数见 `tools/server/deploy.env.example`。仓库不保存真实签名口令、登录口令或 SSH 密码。

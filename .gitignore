@@ -46,3 +46,5 @@ screen_*.png
 # ─── STM32 test firmware (not part of Android project) ───
 小蜜蜂串口助手测试（STM32）/
 小蜜蜂串口助手测试（STM32）.rar
+__pycache__/
+*.pyc
