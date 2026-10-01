@@ -256,6 +256,16 @@ python tools/gen_licenses.py --list
 | 技术难点 | MTU 协商、粘包重组、UI 限流、日志裁剪、断线恢复和高频数据稳定性 |
 | 工程结果 | 从 v1.0 到 v1.8.7 的连续版本历史完整，可用于讲解性能问题闭环 |
 
+## 开发流程与能力证据
+
+```text
+确认 BLE 服务与特征 → 扫描/连接/MTU 协商 → 分包粘包重组
+→ HEX/文本和多协议解析 → 摇杆/按键/OTA/授权 → 100 Hz 压力测试
+→ UI 限流与日志裁剪 → 断线恢复 → 签名构建和版本发布
+```
+
+项目重点体现高频 BLE 稳定性优化：接收线程与 UI 解耦、批量刷新、日志上限、断线清理和协议状态机共同工作，避免“低频能用、高频卡死”的常见问题。
+
 ### 本地敏感配置
 
 发布签名通过 `XMF_KEYSTORE_FILE`、`XMF_KEYSTORE_PASSWORD`、`XMF_KEY_ALIAS`、`XMF_KEY_PASSWORD` 注入；登录演示参数通过 `XMF_LOGIN_ACCOUNT`、`XMF_LOGIN_PASSWORD`、`XMF_ACTIVATION_CODE` 注入。服务器部署参数见 `tools/server/deploy.env.example`。仓库不保存真实签名口令、登录口令或 SSH 密码。
